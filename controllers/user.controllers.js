@@ -117,8 +117,9 @@ export const forgotPassword = (req, res) => {
       html: `
         <h3>Please click the link below to reset password</h3>
         <p>${process.env.CLIENT_URL}/update-password/${token}<p/>
-      `,
-    };
+        `,
+      };
+      // <p>${process.env.CLIENT_URL_LOCALHOST}/update-password/${token}<p/>
 
     return UserSchema.updateOne({ resetLink: token }, (err) => {
       if (err) {
