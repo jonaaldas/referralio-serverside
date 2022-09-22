@@ -240,8 +240,9 @@ export const deleteNote = async (req, res) => {
       throw new Error('User not authorized');
     }
 
-    const deletedNote = await ReferralsSchema.updateMany({ _id: referralId }, { $pull: { agentNotes: { _id: noteId } } });
-    return res.status(200).json(deletedNote);
+    await ReferralsSchema.updateMany({ _id: referralId }, { $pull: { agentNotes: { _id: noteId } } });
+    return res.status(200).json({message: 'Note has been deletd!'});
+    return res.json(referralToDelete)
   } catch (error) {
     return error;
   }
