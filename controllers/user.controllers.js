@@ -62,6 +62,7 @@ export const logInUser = async (req, res) => {
     const { email, password } = req.body;
     
     const user = await UserSchema.findOne({ email });
+    console.log(email, password)
     if (user && (await bcrypt.compare(password, user.password))) {
       res.json({
         _id: user.id,
