@@ -144,7 +144,7 @@ export const updatePassowrd = async (req, res) => {
   // const salt = await bcrypt.genSalt(10);
   // const hashedPassword = await bcrypt.hash(password, salt);
   if (token) {
-    jwt.verify(token, process.env.RESET_PASSWORD_KEY, (error) => {
+    jwt.verify(token, `${process.env.RESET_PASSWORD_KEY}`, (error) => {
       if (error) {
         return res.status(400).json({ error: 'incorect token or it is expired' });
       }
