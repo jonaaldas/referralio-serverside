@@ -29,15 +29,14 @@ export const registerUser = async (req, res) => {
     }
 
     // hashPassword
-    // const salt = await bcrypt.genSalt(10);
-    // const hashedPassword = await bcrypt.hash(password, salt);
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
     // create user
     const user = new UserSchema({
       name,
       email,
-      // password: hashedPassword,
-      password
+      password: hashedPassword,
     });
 
     await user.save();
@@ -63,7 +62,6 @@ export const logInUser = async (req, res) => {
     const { email, password } = req.body;
     
     const user = await UserSchema.findOne({ email });
-    console.log(email, password)
     if (user && (await bcrypt.compare(password, user.password))) {
       res.json({
         _id: user.id,
@@ -141,8 +139,8 @@ export const forgotPassword = (req, res) => {
 
 export const updatePassowrd = async (req, res) => {
   const { token, password } = req.body;
-  // const salt = await bcrypt.genSalt(10);
-  // const hashedPassword = await bcrypt.hash(password, salt);
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt);
   if (token) {
     jwt.verify(token, `${process.env.RESET_PASSWORD_KEY}`, (error) => {
       if (error) {
@@ -152,8 +150,7 @@ export const updatePassowrd = async (req, res) => {
         if (err || !user) {
           return res.status(400).json({ error: 'User with this token does not exist' });
         }
-        // user.password = hashedPassword;
-        user.password = password;
+        user.password = hashedPassword;
         user.save((err) => {
           if (err) {
             return res.status(400).json({ error: 'Reset Password Error' });
